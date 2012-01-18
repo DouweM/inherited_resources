@@ -51,7 +51,7 @@ module InheritedResources
         config[:route_prefix] = options.delete(:route_prefix) if options.key?(:route_prefix)
 
         if options.key?(:resource_class) or options.key?(:class_name)
-          config[:request_name] = self.resource_class.to_s.underscore.gsub('/', '_')
+          config[:request_name] = self.resource_class.respond_to?(:model_name) ? self.resource_class.model_name.param_key : self.resource_class.to_s.underscore.gsub('/', '_')
           options.delete(:resource_class) and options.delete(:class_name)
         end
 
@@ -343,7 +343,7 @@ module InheritedResources
         # Forum::Thread#create will properly pick up the request parameter
         # which will be forum_thread, and not thread
         # Additionally make this work orthogonally with instance_name
-        config[:request_name] = self.resource_class.to_s.underscore.gsub('/', '_')
+        config[:request_name] = self.resource_class.respond_to?(:model_name) ? self.resource_class.model_name.param_key : self.resource_class.to_s.underscore.gsub('/', '_')
 
         # Initialize polymorphic, singleton, scopes and belongs_to parameters
         polymorphic = self.resources_configuration[:polymorphic] || { :symbols => [], :optional => false }

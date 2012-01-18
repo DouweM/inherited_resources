@@ -176,6 +176,7 @@ class TwoPartNameModelForNamespacedController < ActionController::TestCase
 end
 
 class User
+  extend ActiveSupport::Naming 
 end
 class Admin::UsersController < InheritedResources::Base
 end
